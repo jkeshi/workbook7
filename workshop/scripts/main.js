@@ -20,11 +20,28 @@ function loadCategoryDropdown() {
         //OR
         // const option = new Option(user.name, user.id);
 
-       categoryDropdown.appendChild(option);
+        categoryDropdown.appendChild(option);
       });
     });
 }
+function fillProductsTable(products) {
+  const productsTable = document.querySelector("#productsTable tbody");
+  for (const product of products) {
+    let row = productsTable.insertRow(-1);
+    let cell1 = row.insertCell(0);
+    let cell2 = row.insertCell(1);
+    cell1.innerText = product.productId;
+    cell2.innerText = product.productName;
+  }
+}
+
+function loadProducts() {
+  return fetch("http://localhost:8081/api/products").then((response) =>
+    response.json()
+  );
+}
 window.onload = () => {
   //selectDropdown.onchange = loadCategoryDropdown;
+  loadProducts().then(fillProductsTable);
   loadCategoryDropdown();
 };
