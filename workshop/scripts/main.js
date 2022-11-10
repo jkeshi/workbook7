@@ -1,10 +1,11 @@
 "use script";
 
-const selectDropdown = document.getElementById("select-dropdown");
+//const selectDropdown = document.getElementById("select-dropdown");
 const categoryDropdown = document.getElementById("category-dropdown");
+
 function loadCategoryDropdown() {
   //categoryDropdown.style.display = none;
-  selectValue = selectDropdown.value;
+  //selectValue = selectDropdown.value;
   selectValue = categoryDropdown.value;
 
   fetch("http://localhost:8081/api/categories")
@@ -12,17 +13,18 @@ function loadCategoryDropdown() {
     .then((categories) => {
       console.log(categories);
       categories.forEach((category) => {
-        let row = courseTableBody.insertRow(-1);
-        let cell1 = row.insertCell(0);
-        let cell2 = row.insertCell(1);
-        let cell3 = row.insertCell(2);
-        cell1.innerText = category.categoryId;
-        cell2.innerText = category.Description;
-        cell3.innerText = category.categoriesName;
+        const option = document.createElement("option");
+        option.value = category.categoryId;
+        option.innerText = category.name;
+
+        //OR
+        // const option = new Option(user.name, user.id);
+
+       categoryDropdown.appendChild(option);
       });
     });
 }
 window.onload = () => {
-  selectDropdown.onchange = loadCategoryDropdown;
+  //selectDropdown.onchange = loadCategoryDropdown;
   loadCategoryDropdown();
 };
