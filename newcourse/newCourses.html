@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>courses</title>
+  </head>
+  <nav>
+    <a href="./edit-course.html">Add</a>
+  </nav>
+  <body>
+    <table id="courses-table">
+      <thead>
+  
+        <tr>
+          <th>Course Name</th>
+          <th>Intructor</th>
+          <th>Department</th>
+          <th>Courses Number</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <script>
+      (() => {
+        const $q = (s) => document.querySelector(s);
+
+        const tbody = $q("#courses-table tbody");
+
+        function loadData() {
+          return fetch("http://localhost:8888/courses/").then((response) =>
+            response.json()
+          );
+        }
+        function createEditLink(course) {
+          const a = document.createElement("a");
+          a.href = "./Todo-details.html id=" + course.id;
+          a.innerText = "Edit";
+          return a;
+        }
+
+        function fillTable(courses) {
+          for (const course of courses) {
+            const row = tbody.insertRow(-1);
+            let cell1 = row.insertCell(0);
+            let cell2 = row.insertCell(1);
+            let cell3 = row.insertCell(2);
+            let cell4 = row.insertCell(3);
+            cell1.innerText = course.courseName;
+            cell2.innerText = course.instructor;
+            cell3.innerText = course.dept;
+            cell4.innerText = course.courseNum;
+            const a = createEditLink(course);
+            cell4.appendChild(a);
+          }
+        }
+        window.onload = () => {
+          loadData().then((data) => fillTable(data));
+        };
+    
+      })();
+    </script>
+  </body>
+</html>
