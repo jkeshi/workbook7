@@ -7,21 +7,48 @@
     <title>Document</title>
   </head>
   <body>
-     <input type="text" id="courseId" placeholder="id" />
-      <button>Select</button>
-       <div id="course-card"></div>
+    <form>
+      Course Name
+      <input
+        type="text"
+        id="courseName"
+        oninvalid="alert('You forgot something!')" required
+      />
+      Intructor
+      <input
+        type="text"
+        id="instructor"
+        oninvalid="alert('You forgot something!')" required
+      />
+      Department<input
+        type="text"
+        id="dept"
+        oninvalid="alert('You forgot something!')" required
+      />
+      Courses Number<input
+        type="text"
+        id="courseNum"
+        oninvalid="alert('You forgot something!')" required
+      /> 
+      <button>submit</button>
+      <div id="course-card"></div>
+    </form>
     <script>
-        (() => {
-          const $q = (selector) => document.querySelector(selector);
- fetch(`http://localhost:8888/course/${courseId}`)
-            .then((response) => response.json())
-            .then((data) => {
-              console.log(data);
-            });
-      const button = $q("button");
-          button.onclick = onButtonClicked;
-          })();
+      (() => {
+        const $q = (selector) => document.querySelector(selector);
+        fetch(`http://localhost:8888/course/${courseId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            //messageParagraph.innerText = "Successfully saved.";
+          });
+          function getCourseId() {
+                const params = new URLSearchParams(location.search);
+                return params.get("id");
+            }
+        const button = $q("button");
+        button.onclick = onButtonClicked;
+      })();
     </script>
-    
   </body>
 </html>
