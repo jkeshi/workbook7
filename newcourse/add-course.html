@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit</title>
+    <title>Add</title>
   </head>
   <body>
     <form>
@@ -36,9 +36,12 @@
         oninvalid="alert('You forgot something!')"
         required
       />
-      <button>submit</button>
-      <div id="course-card"></div>
-      <a href="./newCourses.html">cancel</a>
+      <div>
+        <div id="course-card"></div>
+        <button>submit</button>
+        <div id="course-card"></div>
+        <a href="./newCourses.html">cancel</a>
+      </div>
     </form>
     <script>
       (() => {
@@ -51,52 +54,31 @@
         function saveCourse(event) {
           event.preventDefault();
           const id = getCourseId();
-
-          const bodyData = {
-            courseNum: 1,
-            instructor: instructor.value,
-            dept: dept.checked,
-          };
         }
-
         function loadCourse(courseId) {
           fetch(`http://localhost:8888/courses/${courseId}`)
             .then((response) => response.json())
-            .then((course) => {
-              console.log(course);
-              courseName.value = course.courseName;
-              instructor.value = course.instructor;
-              dept.value = course.dept;
-              courseNum = course.courseNum;
+            .then((data) => {
+              console.log(data);
+              completedName.checked = course.completed;
             });
         }
 
-        function saveCourse() {
-          fetch("http://localhost:8888/courses/" + courseId, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(bodyData),
+        fetch("http://localhost:8888/course/" + id, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(bodyData),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            window.location = "./newCourse.html";
+            messageParagraph.innerText = "Successfully saved.";
           })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log(data);
-              window.location = "./newCourse.html";
-              messageParagraph.innerText = "Successfully saved.";
-            })
-            .catch((error) => {
-              console.log(error);
-              messageParagraph.innerText = "An unexpected error occured.";
-            });
-        }
-        function getCourseId() {
-          const params = new URLSearchParams(location.search);
-          return params.get("id");
-        }
-        window.onload = function () {
-          const button = $q("button");
-          loadCourse(getCourseId());
-          button.onclick = saveCourse;
-        };
+          .catch((error) => {
+            console.log(error);
+            messageParagraph.innerText = "An unexpected error occured.";
+          });
       })();
     </script>
   </body>
